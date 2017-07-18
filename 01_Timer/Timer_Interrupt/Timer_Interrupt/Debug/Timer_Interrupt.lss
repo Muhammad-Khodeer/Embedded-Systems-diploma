@@ -1,0 +1,334 @@
+
+Timer_Interrupt.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000001ac  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000001  00800060  00800060  00000220  2**0
+                  ALLOC
+  2 .comment      00000030  00000000  00000000  00000220  2**0
+                  CONTENTS, READONLY
+  3 .debug_aranges 00000088  00000000  00000000  00000250  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   0000031a  00000000  00000000  000002d8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 000001f8  00000000  00000000  000005f2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   000002da  00000000  00000000  000007ea  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  000000cc  00000000  00000000  00000ac4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    00000244  00000000  00000000  00000b90  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_loc    000000f3  00000000  00000000  00000dd4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000058  00000000  00000000  00000ec7  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   8:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  10:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  14:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  18:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  1c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  20:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  24:	0c 94 c0 00 	jmp	0x180	; 0x180 <__vector_9>
+  28:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  2c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  30:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  34:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  38:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  3c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  40:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  44:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  48:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  4c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  50:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_clear_bss>:
+  60:	20 e0       	ldi	r18, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	01 c0       	rjmp	.+2      	; 0x6a <.do_clear_bss_start>
+
+00000068 <.do_clear_bss_loop>:
+  68:	1d 92       	st	X+, r1
+
+0000006a <.do_clear_bss_start>:
+  6a:	a1 36       	cpi	r26, 0x61	; 97
+  6c:	b2 07       	cpc	r27, r18
+  6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
+  70:	0e 94 3e 00 	call	0x7c	; 0x7c <main>
+  74:	0c 94 d4 00 	jmp	0x1a8	; 0x1a8 <_exit>
+
+00000078 <__bad_interrupt>:
+  78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000007c <main>:
+//This is the Application Layer >> Connected with >> Hardware Layer.
+#include "TI_HW_Layer/TI_HW_Layer.h"
+
+int main (void)
+{
+	Initiliation(); 
+  7c:	0e 94 48 00 	call	0x90	; 0x90 <Initiliation>
+	//Select the speed type.[should be from from 0 to 6] or [CLK1,CLK8,CLK64,CLK256,CLK1024,EX_CLK_FE,EX_CLK_HE]
+	Select_Speed_Type(CLK64);  
+  80:	82 e0       	ldi	r24, 0x02	; 2
+  82:	0e 94 4d 00 	call	0x9a	; 0x9a <Select_Speed_Type>
+	while(1)
+	{
+		Start_LED_Flash();	
+  86:	0e 94 a1 00 	call	0x142	; 0x142 <Start_LED_Flash>
+		Stop_if_BTN16_Pushed(); // Note : [if you Push Button16 the LED Flash will stop]
+  8a:	0e 94 ae 00 	call	0x15c	; 0x15c <Stop_if_BTN16_Pushed>
+  8e:	fb cf       	rjmp	.-10     	; 0x86 <main+0xa>
+
+00000090 <Initiliation>:
+volatile unsigned char Event; // THIS IS EXTERNAL VARIABLE FROM MCAL LAYER
+
+//Function[1]
+void Initiliation(void)
+{
+	Init_LED4;
+  90:	8b 9a       	sbi	0x11, 3	; 17
+	Init_BTN16;
+  92:	8f 98       	cbi	0x11, 7	; 17
+	Init_LED4_Flash();
+  94:	0e 94 bb 00 	call	0x176	; 0x176 <Init_LED4_Flash>
+  98:	08 95       	ret
+
+0000009a <Select_Speed_Type>:
+}
+//Function[2]
+void Select_Speed_Type(Type Speed_Type)
+{
+    if (Speed_Type == CLK1)
+  9a:	81 11       	cpse	r24, r1
+  9c:	0a c0       	rjmp	.+20     	; 0xb2 <Select_Speed_Type+0x18>
+    {
+	    Speed_Type0;
+  9e:	8e b5       	in	r24, 0x2e	; 46
+  a0:	81 60       	ori	r24, 0x01	; 1
+  a2:	8e bd       	out	0x2e, r24	; 46
+  a4:	8e b5       	in	r24, 0x2e	; 46
+  a6:	8d 7f       	andi	r24, 0xFD	; 253
+  a8:	8e bd       	out	0x2e, r24	; 46
+  aa:	8e b5       	in	r24, 0x2e	; 46
+  ac:	8b 7f       	andi	r24, 0xFB	; 251
+  ae:	8e bd       	out	0x2e, r24	; 46
+  b0:	08 95       	ret
+    }
+    else if (Speed_Type == CLK8)
+  b2:	81 30       	cpi	r24, 0x01	; 1
+  b4:	51 f4       	brne	.+20     	; 0xca <Select_Speed_Type+0x30>
+    {
+	    Speed_Type1;
+  b6:	8e b5       	in	r24, 0x2e	; 46
+  b8:	8e 7f       	andi	r24, 0xFE	; 254
+  ba:	8e bd       	out	0x2e, r24	; 46
+  bc:	8e b5       	in	r24, 0x2e	; 46
+  be:	82 60       	ori	r24, 0x02	; 2
+  c0:	8e bd       	out	0x2e, r24	; 46
+  c2:	8e b5       	in	r24, 0x2e	; 46
+  c4:	8b 7f       	andi	r24, 0xFB	; 251
+  c6:	8e bd       	out	0x2e, r24	; 46
+  c8:	08 95       	ret
+    }
+    else if (Speed_Type == CLK64)
+  ca:	82 30       	cpi	r24, 0x02	; 2
+  cc:	51 f4       	brne	.+20     	; 0xe2 <Select_Speed_Type+0x48>
+    {
+	    Speed_Type2;
+  ce:	8e b5       	in	r24, 0x2e	; 46
+  d0:	81 60       	ori	r24, 0x01	; 1
+  d2:	8e bd       	out	0x2e, r24	; 46
+  d4:	8e b5       	in	r24, 0x2e	; 46
+  d6:	82 60       	ori	r24, 0x02	; 2
+  d8:	8e bd       	out	0x2e, r24	; 46
+  da:	8e b5       	in	r24, 0x2e	; 46
+  dc:	8b 7f       	andi	r24, 0xFB	; 251
+  de:	8e bd       	out	0x2e, r24	; 46
+  e0:	08 95       	ret
+    }
+    else if (Speed_Type == CLK256)
+  e2:	83 30       	cpi	r24, 0x03	; 3
+  e4:	51 f4       	brne	.+20     	; 0xfa <Select_Speed_Type+0x60>
+    {
+	    Speed_Type3;
+  e6:	8e b5       	in	r24, 0x2e	; 46
+  e8:	8e 7f       	andi	r24, 0xFE	; 254
+  ea:	8e bd       	out	0x2e, r24	; 46
+  ec:	8e b5       	in	r24, 0x2e	; 46
+  ee:	8d 7f       	andi	r24, 0xFD	; 253
+  f0:	8e bd       	out	0x2e, r24	; 46
+  f2:	8e b5       	in	r24, 0x2e	; 46
+  f4:	84 60       	ori	r24, 0x04	; 4
+  f6:	8e bd       	out	0x2e, r24	; 46
+  f8:	08 95       	ret
+	}
+    else if (Speed_Type == CLK1024)
+  fa:	84 30       	cpi	r24, 0x04	; 4
+  fc:	51 f4       	brne	.+20     	; 0x112 <Select_Speed_Type+0x78>
+    {
+	    Speed_Type4;
+  fe:	8e b5       	in	r24, 0x2e	; 46
+ 100:	81 60       	ori	r24, 0x01	; 1
+ 102:	8e bd       	out	0x2e, r24	; 46
+ 104:	8e b5       	in	r24, 0x2e	; 46
+ 106:	8d 7f       	andi	r24, 0xFD	; 253
+ 108:	8e bd       	out	0x2e, r24	; 46
+ 10a:	8e b5       	in	r24, 0x2e	; 46
+ 10c:	84 60       	ori	r24, 0x04	; 4
+ 10e:	8e bd       	out	0x2e, r24	; 46
+ 110:	08 95       	ret
+    }
+	else if (Speed_Type == EX_CLK_FE)
+ 112:	85 30       	cpi	r24, 0x05	; 5
+ 114:	51 f4       	brne	.+20     	; 0x12a <Select_Speed_Type+0x90>
+    {
+	    Speed_Type5;
+ 116:	8e b5       	in	r24, 0x2e	; 46
+ 118:	8e 7f       	andi	r24, 0xFE	; 254
+ 11a:	8e bd       	out	0x2e, r24	; 46
+ 11c:	8e b5       	in	r24, 0x2e	; 46
+ 11e:	82 60       	ori	r24, 0x02	; 2
+ 120:	8e bd       	out	0x2e, r24	; 46
+ 122:	8e b5       	in	r24, 0x2e	; 46
+ 124:	84 60       	ori	r24, 0x04	; 4
+ 126:	8e bd       	out	0x2e, r24	; 46
+ 128:	08 95       	ret
+    }
+    else if (Speed_Type == EX_CLK_HE)
+ 12a:	86 30       	cpi	r24, 0x06	; 6
+ 12c:	49 f4       	brne	.+18     	; 0x140 <Select_Speed_Type+0xa6>
+    {
+	    Speed_Type6;
+ 12e:	8e b5       	in	r24, 0x2e	; 46
+ 130:	81 60       	ori	r24, 0x01	; 1
+ 132:	8e bd       	out	0x2e, r24	; 46
+ 134:	8e b5       	in	r24, 0x2e	; 46
+ 136:	8d 7f       	andi	r24, 0xFD	; 253
+ 138:	8e bd       	out	0x2e, r24	; 46
+ 13a:	8e b5       	in	r24, 0x2e	; 46
+ 13c:	8b 7f       	andi	r24, 0xFB	; 251
+ 13e:	8e bd       	out	0x2e, r24	; 46
+ 140:	08 95       	ret
+
+00000142 <Start_LED_Flash>:
+    }
+}
+//Function[3]
+void Start_LED_Flash(void)
+{
+	while(Event) //this means that the interrupt is happened and make Event = 1.
+ 142:	80 91 60 00 	lds	r24, 0x0060
+ 146:	88 23       	and	r24, r24
+ 148:	41 f0       	breq	.+16     	; 0x15a <Start_LED_Flash+0x18>
+	{
+		task();
+ 14a:	0e 94 cf 00 	call	0x19e	; 0x19e <task>
+		Event = 0;
+ 14e:	10 92 60 00 	sts	0x0060, r1
+    }
+}
+//Function[3]
+void Start_LED_Flash(void)
+{
+	while(Event) //this means that the interrupt is happened and make Event = 1.
+ 152:	80 91 60 00 	lds	r24, 0x0060
+ 156:	81 11       	cpse	r24, r1
+ 158:	f8 cf       	rjmp	.-16     	; 0x14a <Start_LED_Flash+0x8>
+ 15a:	08 95       	ret
+
+0000015c <Stop_if_BTN16_Pushed>:
+	}
+}
+//Function[4]
+void Stop_if_BTN16_Pushed(void)
+{
+	if(BTN16_Is_Pushed)
+ 15c:	87 99       	sbic	0x10, 7	; 16
+ 15e:	0a c0       	rjmp	.+20     	; 0x174 <Stop_if_BTN16_Pushed+0x18>
+	{
+		Stop_LED;
+ 160:	8e b5       	in	r24, 0x2e	; 46
+ 162:	8e 7f       	andi	r24, 0xFE	; 254
+ 164:	8e bd       	out	0x2e, r24	; 46
+ 166:	8e b5       	in	r24, 0x2e	; 46
+ 168:	8d 7f       	andi	r24, 0xFD	; 253
+ 16a:	8e bd       	out	0x2e, r24	; 46
+ 16c:	8e b5       	in	r24, 0x2e	; 46
+ 16e:	8b 7f       	andi	r24, 0xFB	; 251
+ 170:	8e bd       	out	0x2e, r24	; 46
+ 172:	93 98       	cbi	0x12, 3	; 18
+ 174:	08 95       	ret
+
+00000176 <Init_LED4_Flash>:
+#include <avr/interrupt.h>
+#include "TI_MCAL_Layer.h"
+
+void Init_LED4_Flash(void)
+{
+	Init_Timer_Interupt;
+ 176:	89 b7       	in	r24, 0x39	; 57
+ 178:	84 60       	ori	r24, 0x04	; 4
+ 17a:	89 bf       	out	0x39, r24	; 57
+ 17c:	78 94       	sei
+ 17e:	08 95       	ret
+
+00000180 <__vector_9>:
+}
+
+// the Code Inside overflow of timer 1 interrupt
+ISR(TIMER1_OVF_vect)
+{
+ 180:	1f 92       	push	r1
+ 182:	0f 92       	push	r0
+ 184:	0f b6       	in	r0, 0x3f	; 63
+ 186:	0f 92       	push	r0
+ 188:	11 24       	eor	r1, r1
+ 18a:	8f 93       	push	r24
+	Event = 1;
+ 18c:	81 e0       	ldi	r24, 0x01	; 1
+ 18e:	80 93 60 00 	sts	0x0060, r24
+}
+ 192:	8f 91       	pop	r24
+ 194:	0f 90       	pop	r0
+ 196:	0f be       	out	0x3f, r0	; 63
+ 198:	0f 90       	pop	r0
+ 19a:	1f 90       	pop	r1
+ 19c:	18 95       	reti
+
+0000019e <task>:
+
+//Task function
+void task(void)
+{
+	//ignition
+	PORTD ^= (1<<3);
+ 19e:	92 b3       	in	r25, 0x12	; 18
+ 1a0:	88 e0       	ldi	r24, 0x08	; 8
+ 1a2:	89 27       	eor	r24, r25
+ 1a4:	82 bb       	out	0x12, r24	; 18
+ 1a6:	08 95       	ret
+
+000001a8 <_exit>:
+ 1a8:	f8 94       	cli
+
+000001aa <__stop_program>:
+ 1aa:	ff cf       	rjmp	.-2      	; 0x1aa <__stop_program>
