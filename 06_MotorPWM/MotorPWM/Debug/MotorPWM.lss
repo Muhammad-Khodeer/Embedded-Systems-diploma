@@ -1,0 +1,167 @@
+
+MotorPWM.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000fa  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .comment      00000030  00000000  00000000  0000014e  2**0
+                  CONTENTS, READONLY
+  2 .debug_aranges 00000028  00000000  00000000  0000017e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   00000283  00000000  00000000  000001a6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 00000111  00000000  00000000  00000429  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   00000195  00000000  00000000  0000053a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  00000034  00000000  00000000  000006d0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    00000188  00000000  00000000  00000704  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_loc    00000021  00000000  00000000  0000088c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_ranges 00000018  00000000  00000000  000008ad  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 3e 00 	call	0x7c	; 0x7c <main>
+  64:	0c 94 7b 00 	jmp	0xf6	; 0xf6 <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <pwm_start>:
+		_delay_ms(5000);
+        //TODO:: Please write your application code 
+    }
+}
+void pwm_start(unsigned char PULSE_WIDTH){
+	OCR1AL = PULSE_WIDTH;	//Load Pulse width
+  6c:	8a bd       	out	0x2a, r24	; 42
+	OCR1AH = 0;
+  6e:	1b bc       	out	0x2b, r1	; 43
+	DDRD |= (1<<5);		//PortD.5 as o/p
+  70:	8d 9a       	sbi	0x11, 5	; 17
+	TCCR1A = 0x81;		//8-bit, Non-Inverted PWM
+  72:	81 e8       	ldi	r24, 0x81	; 129
+  74:	8f bd       	out	0x2f, r24	; 47
+	TCCR1B = 1;		//Start PWM
+  76:	81 e0       	ldi	r24, 0x01	; 1
+  78:	8e bd       	out	0x2e, r24	; 46
+  7a:	08 95       	ret
+
+0000007c <main>:
+void pwm_start(unsigned char PULSE_WIDTH);
+int main(void)
+{
+    while(1)
+    {
+		pwm_start(255/4);
+  7c:	8f e3       	ldi	r24, 0x3F	; 63
+  7e:	0e 94 36 00 	call	0x6c	; 0x6c <pwm_start>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  82:	2f e3       	ldi	r18, 0x3F	; 63
+  84:	82 e4       	ldi	r24, 0x42	; 66
+  86:	9f e0       	ldi	r25, 0x0F	; 15
+  88:	21 50       	subi	r18, 0x01	; 1
+  8a:	80 40       	sbci	r24, 0x00	; 0
+  8c:	90 40       	sbci	r25, 0x00	; 0
+  8e:	e1 f7       	brne	.-8      	; 0x88 <main+0xc>
+  90:	00 c0       	rjmp	.+0      	; 0x92 <main+0x16>
+  92:	00 00       	nop
+		_delay_ms(5000);
+		pwm_start(255/2);
+  94:	8f e7       	ldi	r24, 0x7F	; 127
+  96:	0e 94 36 00 	call	0x6c	; 0x6c <pwm_start>
+  9a:	2f e3       	ldi	r18, 0x3F	; 63
+  9c:	82 e4       	ldi	r24, 0x42	; 66
+  9e:	9f e0       	ldi	r25, 0x0F	; 15
+  a0:	21 50       	subi	r18, 0x01	; 1
+  a2:	80 40       	sbci	r24, 0x00	; 0
+  a4:	90 40       	sbci	r25, 0x00	; 0
+  a6:	e1 f7       	brne	.-8      	; 0xa0 <main+0x24>
+  a8:	00 c0       	rjmp	.+0      	; 0xaa <main+0x2e>
+  aa:	00 00       	nop
+		_delay_ms(5000);
+		pwm_start((255/4)*3);
+  ac:	8d eb       	ldi	r24, 0xBD	; 189
+  ae:	0e 94 36 00 	call	0x6c	; 0x6c <pwm_start>
+  b2:	2f e3       	ldi	r18, 0x3F	; 63
+  b4:	82 e4       	ldi	r24, 0x42	; 66
+  b6:	9f e0       	ldi	r25, 0x0F	; 15
+  b8:	21 50       	subi	r18, 0x01	; 1
+  ba:	80 40       	sbci	r24, 0x00	; 0
+  bc:	90 40       	sbci	r25, 0x00	; 0
+  be:	e1 f7       	brne	.-8      	; 0xb8 <main+0x3c>
+  c0:	00 c0       	rjmp	.+0      	; 0xc2 <main+0x46>
+  c2:	00 00       	nop
+		_delay_ms(5000);
+		pwm_start(255);
+  c4:	8f ef       	ldi	r24, 0xFF	; 255
+  c6:	0e 94 36 00 	call	0x6c	; 0x6c <pwm_start>
+  ca:	2f e3       	ldi	r18, 0x3F	; 63
+  cc:	82 e4       	ldi	r24, 0x42	; 66
+  ce:	9f e0       	ldi	r25, 0x0F	; 15
+  d0:	21 50       	subi	r18, 0x01	; 1
+  d2:	80 40       	sbci	r24, 0x00	; 0
+  d4:	90 40       	sbci	r25, 0x00	; 0
+  d6:	e1 f7       	brne	.-8      	; 0xd0 <main+0x54>
+  d8:	00 c0       	rjmp	.+0      	; 0xda <main+0x5e>
+  da:	00 00       	nop
+		_delay_ms(5000);
+		pwm_start(0);
+  dc:	80 e0       	ldi	r24, 0x00	; 0
+  de:	0e 94 36 00 	call	0x6c	; 0x6c <pwm_start>
+  e2:	2f e3       	ldi	r18, 0x3F	; 63
+  e4:	82 e4       	ldi	r24, 0x42	; 66
+  e6:	9f e0       	ldi	r25, 0x0F	; 15
+  e8:	21 50       	subi	r18, 0x01	; 1
+  ea:	80 40       	sbci	r24, 0x00	; 0
+  ec:	90 40       	sbci	r25, 0x00	; 0
+  ee:	e1 f7       	brne	.-8      	; 0xe8 <main+0x6c>
+  f0:	00 c0       	rjmp	.+0      	; 0xf2 <main+0x76>
+  f2:	00 00       	nop
+  f4:	c3 cf       	rjmp	.-122    	; 0x7c <main>
+
+000000f6 <_exit>:
+  f6:	f8 94       	cli
+
+000000f8 <__stop_program>:
+  f8:	ff cf       	rjmp	.-2      	; 0xf8 <__stop_program>
