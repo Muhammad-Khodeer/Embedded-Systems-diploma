@@ -1,0 +1,268 @@
+
+Led_On_Off_Stp_Btn.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000180  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000002  00800060  00000180  000001f4  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  000001f6  2**0
+                  CONTENTS, READONLY
+  3 .debug_aranges 00000030  00000000  00000000  00000226  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   0000012f  00000000  00000000  00000256  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 000000ec  00000000  00000000  00000385  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   000000e7  00000000  00000000  00000471  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  00000054  00000000  00000000  00000558  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    00000146  00000000  00000000  000005ac  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_loc    000000cc  00000000  00000000  000006f2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000020  00000000  00000000  000007be  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   8:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  10:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  14:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  18:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  1c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  20:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  24:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  28:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  2c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  30:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  34:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  38:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  3c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  40:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  44:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  48:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  4c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  50:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_copy_data>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	e0 e8       	ldi	r30, 0x80	; 128
+  68:	f1 e0       	ldi	r31, 0x01	; 1
+  6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
+  6c:	05 90       	lpm	r0, Z+
+  6e:	0d 92       	st	X+, r0
+  70:	a2 36       	cpi	r26, 0x62	; 98
+  72:	b1 07       	cpc	r27, r17
+  74:	d9 f7       	brne	.-10     	; 0x6c <__do_copy_data+0xc>
+  76:	0e 94 84 00 	call	0x108	; 0x108 <main>
+  7a:	0c 94 be 00 	jmp	0x17c	; 0x17c <_exit>
+
+0000007e <__bad_interrupt>:
+  7e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000082 <End>:
+	}
+}
+
+void End(void)
+{
+	x = 0;
+  82:	10 92 61 00 	sts	0x0061, r1
+  86:	10 92 60 00 	sts	0x0060, r1
+	Led4_Off;
+  8a:	93 98       	cbi	0x12, 3	; 18
+  8c:	08 95       	ret
+
+0000008e <Delay>:
+		Delay(5); //Enter delay time in second
+    }
+}
+// The Delay Function.
+void Delay(long volatile time)
+{
+  8e:	cf 93       	push	r28
+  90:	df 93       	push	r29
+  92:	00 d0       	rcall	.+0      	; 0x94 <Delay+0x6>
+  94:	00 d0       	rcall	.+0      	; 0x96 <Delay+0x8>
+  96:	cd b7       	in	r28, 0x3d	; 61
+  98:	de b7       	in	r29, 0x3e	; 62
+  9a:	69 83       	std	Y+1, r22	; 0x01
+  9c:	7a 83       	std	Y+2, r23	; 0x02
+  9e:	8b 83       	std	Y+3, r24	; 0x03
+  a0:	9c 83       	std	Y+4, r25	; 0x04
+	time *= 50000;
+  a2:	29 81       	ldd	r18, Y+1	; 0x01
+  a4:	3a 81       	ldd	r19, Y+2	; 0x02
+  a6:	4b 81       	ldd	r20, Y+3	; 0x03
+  a8:	5c 81       	ldd	r21, Y+4	; 0x04
+  aa:	a0 e5       	ldi	r26, 0x50	; 80
+  ac:	b3 ec       	ldi	r27, 0xC3	; 195
+  ae:	0e 94 a4 00 	call	0x148	; 0x148 <__muluhisi3>
+  b2:	69 83       	std	Y+1, r22	; 0x01
+  b4:	7a 83       	std	Y+2, r23	; 0x02
+  b6:	8b 83       	std	Y+3, r24	; 0x03
+  b8:	9c 83       	std	Y+4, r25	; 0x04
+	long i;
+	for(i = 0; i < time; i++)
+  ba:	89 81       	ldd	r24, Y+1	; 0x01
+  bc:	9a 81       	ldd	r25, Y+2	; 0x02
+  be:	ab 81       	ldd	r26, Y+3	; 0x03
+  c0:	bc 81       	ldd	r27, Y+4	; 0x04
+  c2:	18 16       	cp	r1, r24
+  c4:	19 06       	cpc	r1, r25
+  c6:	1a 06       	cpc	r1, r26
+  c8:	1b 06       	cpc	r1, r27
+  ca:	bc f4       	brge	.+46     	; 0xfa <Delay+0x6c>
+	{
+		if (Btn16_Is_Pressed)
+  cc:	87 99       	sbic	0x10, 7	; 16
+  ce:	06 c0       	rjmp	.+12     	; 0xdc <Delay+0x4e>
+  d0:	02 c0       	rjmp	.+4      	; 0xd6 <Delay+0x48>
+  d2:	87 99       	sbic	0x10, 7	; 16
+  d4:	06 c0       	rjmp	.+12     	; 0xe2 <Delay+0x54>
+			{
+				End();
+  d6:	0e 94 41 00 	call	0x82	; 0x82 <End>
+				break;
+  da:	0f c0       	rjmp	.+30     	; 0xfa <Delay+0x6c>
+// The Delay Function.
+void Delay(long volatile time)
+{
+	time *= 50000;
+	long i;
+	for(i = 0; i < time; i++)
+  dc:	80 e0       	ldi	r24, 0x00	; 0
+  de:	90 e0       	ldi	r25, 0x00	; 0
+  e0:	dc 01       	movw	r26, r24
+  e2:	01 96       	adiw	r24, 0x01	; 1
+  e4:	a1 1d       	adc	r26, r1
+  e6:	b1 1d       	adc	r27, r1
+  e8:	49 81       	ldd	r20, Y+1	; 0x01
+  ea:	5a 81       	ldd	r21, Y+2	; 0x02
+  ec:	6b 81       	ldd	r22, Y+3	; 0x03
+  ee:	7c 81       	ldd	r23, Y+4	; 0x04
+  f0:	84 17       	cp	r24, r20
+  f2:	95 07       	cpc	r25, r21
+  f4:	a6 07       	cpc	r26, r22
+  f6:	b7 07       	cpc	r27, r23
+  f8:	64 f3       	brlt	.-40     	; 0xd2 <Delay+0x44>
+			{
+				End();
+				break;
+			}
+	}
+}
+  fa:	0f 90       	pop	r0
+  fc:	0f 90       	pop	r0
+  fe:	0f 90       	pop	r0
+ 100:	0f 90       	pop	r0
+ 102:	df 91       	pop	r29
+ 104:	cf 91       	pop	r28
+ 106:	08 95       	ret
+
+00000108 <main>:
+int x =1;
+
+int main(void)
+{
+	//initialization code
+	Init_Led4;
+ 108:	8b 9a       	sbi	0x11, 3	; 17
+ 10a:	93 98       	cbi	0x12, 3	; 18
+	Init_Btn16;
+ 10c:	8f 98       	cbi	0x11, 7	; 17
+	
+	//main code
+    while(x)
+ 10e:	80 91 60 00 	lds	r24, 0x0060
+ 112:	90 91 61 00 	lds	r25, 0x0061
+ 116:	89 2b       	or	r24, r25
+ 118:	a1 f0       	breq	.+40     	; 0x142 <main+0x3a>
+    {
+		Led4_On;
+ 11a:	93 9a       	sbi	0x12, 3	; 18
+		Delay(5); // Enter Delay time in second
+ 11c:	65 e0       	ldi	r22, 0x05	; 5
+ 11e:	70 e0       	ldi	r23, 0x00	; 0
+ 120:	80 e0       	ldi	r24, 0x00	; 0
+ 122:	90 e0       	ldi	r25, 0x00	; 0
+ 124:	0e 94 47 00 	call	0x8e	; 0x8e <Delay>
+		Led4_Off;
+ 128:	93 98       	cbi	0x12, 3	; 18
+		Delay(5); //Enter delay time in second
+ 12a:	65 e0       	ldi	r22, 0x05	; 5
+ 12c:	70 e0       	ldi	r23, 0x00	; 0
+ 12e:	80 e0       	ldi	r24, 0x00	; 0
+ 130:	90 e0       	ldi	r25, 0x00	; 0
+ 132:	0e 94 47 00 	call	0x8e	; 0x8e <Delay>
+	//initialization code
+	Init_Led4;
+	Init_Btn16;
+	
+	//main code
+    while(x)
+ 136:	80 91 60 00 	lds	r24, 0x0060
+ 13a:	90 91 61 00 	lds	r25, 0x0061
+ 13e:	89 2b       	or	r24, r25
+ 140:	61 f7       	brne	.-40     	; 0x11a <main+0x12>
+		Led4_On;
+		Delay(5); // Enter Delay time in second
+		Led4_Off;
+		Delay(5); //Enter delay time in second
+    }
+}
+ 142:	80 e0       	ldi	r24, 0x00	; 0
+ 144:	90 e0       	ldi	r25, 0x00	; 0
+ 146:	08 95       	ret
+
+00000148 <__muluhisi3>:
+ 148:	0e 94 af 00 	call	0x15e	; 0x15e <__umulhisi3>
+ 14c:	a5 9f       	mul	r26, r21
+ 14e:	90 0d       	add	r25, r0
+ 150:	b4 9f       	mul	r27, r20
+ 152:	90 0d       	add	r25, r0
+ 154:	a4 9f       	mul	r26, r20
+ 156:	80 0d       	add	r24, r0
+ 158:	91 1d       	adc	r25, r1
+ 15a:	11 24       	eor	r1, r1
+ 15c:	08 95       	ret
+
+0000015e <__umulhisi3>:
+ 15e:	a2 9f       	mul	r26, r18
+ 160:	b0 01       	movw	r22, r0
+ 162:	b3 9f       	mul	r27, r19
+ 164:	c0 01       	movw	r24, r0
+ 166:	a3 9f       	mul	r26, r19
+ 168:	70 0d       	add	r23, r0
+ 16a:	81 1d       	adc	r24, r1
+ 16c:	11 24       	eor	r1, r1
+ 16e:	91 1d       	adc	r25, r1
+ 170:	b2 9f       	mul	r27, r18
+ 172:	70 0d       	add	r23, r0
+ 174:	81 1d       	adc	r24, r1
+ 176:	11 24       	eor	r1, r1
+ 178:	91 1d       	adc	r25, r1
+ 17a:	08 95       	ret
+
+0000017c <_exit>:
+ 17c:	f8 94       	cli
+
+0000017e <__stop_program>:
+ 17e:	ff cf       	rjmp	.-2      	; 0x17e <__stop_program>
