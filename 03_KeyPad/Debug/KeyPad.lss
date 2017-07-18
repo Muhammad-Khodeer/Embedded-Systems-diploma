@@ -1,0 +1,392 @@
+
+KeyPad.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000256  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000003  00800060  00800060  000002ca  2**0
+                  ALLOC
+  2 .comment      00000030  00000000  00000000  000002ca  2**0
+                  CONTENTS, READONLY
+  3 .debug_aranges 000000a8  00000000  00000000  000002fa  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   0000042f  00000000  00000000  000003a2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 00000300  00000000  00000000  000007d1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   000002f6  00000000  00000000  00000ad1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  00000138  00000000  00000000  00000dc8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    00000223  00000000  00000000  00000f00  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_loc    000001b8  00000000  00000000  00001123  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000068  00000000  00000000  000012db  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   8:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  10:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  14:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  18:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  1c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  20:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  24:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  28:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  2c:	0c 94 ba 00 	jmp	0x174	; 0x174 <__vector_11>
+  30:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  34:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  38:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  3c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  40:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  44:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  48:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  4c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  50:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_clear_bss>:
+  60:	20 e0       	ldi	r18, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	01 c0       	rjmp	.+2      	; 0x6a <.do_clear_bss_start>
+
+00000068 <.do_clear_bss_loop>:
+  68:	1d 92       	st	X+, r1
+
+0000006a <.do_clear_bss_start>:
+  6a:	a3 36       	cpi	r26, 0x63	; 99
+  6c:	b2 07       	cpc	r27, r18
+  6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
+  70:	0e 94 3e 00 	call	0x7c	; 0x7c <main>
+  74:	0c 94 29 01 	jmp	0x252	; 0x252 <_exit>
+
+00000078 <__bad_interrupt>:
+  78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000007c <main>:
+  7c:	0e 94 e0 00 	call	0x1c0	; 0x1c0 <init_SSEG>
+  80:	0e 94 49 00 	call	0x92	; 0x92 <keypadInit>
+  84:	0e 94 b2 00 	call	0x164	; 0x164 <OStime_start>
+  88:	0e 94 53 00 	call	0xa6	; 0xa6 <keyScan>
+  8c:	0e 94 f9 00 	call	0x1f2	; 0x1f2 <SSEG_Print99>
+  90:	fb cf       	rjmp	.-10     	; 0x88 <main+0xc>
+
+00000092 <keypadInit>:
+ */ 
+#include "MYMICRO.h"
+static uint8_t colScan(void);
+void keypadInit(void)
+	{
+		keypad_init;
+  92:	84 b3       	in	r24, 0x14	; 20
+  94:	80 6f       	ori	r24, 0xF0	; 240
+  96:	84 bb       	out	0x14, r24	; 20
+  98:	81 b3       	in	r24, 0x11	; 17
+  9a:	8f 70       	andi	r24, 0x0F	; 15
+  9c:	81 bb       	out	0x11, r24	; 17
+  9e:	85 b3       	in	r24, 0x15	; 21
+  a0:	80 6f       	ori	r24, 0xF0	; 240
+  a2:	85 bb       	out	0x15, r24	; 21
+  a4:	08 95       	ret
+
+000000a6 <keyScan>:
+	}
+
+uint8_t keyScan(void)
+	{
+  a6:	cf 93       	push	r28
+  a8:	df 93       	push	r29
+  aa:	00 d0       	rcall	.+0      	; 0xac <keyScan+0x6>
+  ac:	cd b7       	in	r28, 0x3d	; 61
+  ae:	de b7       	in	r29, 0x3e	; 62
+  b0:	44 e0       	ldi	r20, 0x04	; 4
+  b2:	50 e0       	ldi	r21, 0x00	; 0
+		uint8_t col,raw,RET;
+		
+		for(raw=1;raw <= 4;raw++)
+		{
+			keypad_out(raw);
+  b4:	21 e0       	ldi	r18, 0x01	; 1
+  b6:	30 e0       	ldi	r19, 0x00	; 0
+  b8:	85 b3       	in	r24, 0x15	; 21
+  ba:	80 6f       	ori	r24, 0xF0	; 240
+  bc:	85 bb       	out	0x15, r24	; 21
+  be:	00 00       	nop
+  c0:	e5 b3       	in	r30, 0x15	; 21
+  c2:	ba 01       	movw	r22, r20
+  c4:	63 50       	subi	r22, 0x03	; 3
+  c6:	71 09       	sbc	r23, r1
+  c8:	c9 01       	movw	r24, r18
+  ca:	04 2e       	mov	r0, r20
+  cc:	02 c0       	rjmp	.+4      	; 0xd2 <keyScan+0x2c>
+  ce:	88 0f       	add	r24, r24
+  d0:	99 1f       	adc	r25, r25
+  d2:	0a 94       	dec	r0
+  d4:	e2 f7       	brpl	.-8      	; 0xce <keyScan+0x28>
+  d6:	80 95       	com	r24
+  d8:	8e 23       	and	r24, r30
+  da:	85 bb       	out	0x15, r24	; 21
+  dc:	00 00       	nop
+	}
+	
+static uint8_t colScan(void)
+	{
+		volatile uint8_t col,RET;
+		for(col = 0;col <=3 ;col++)
+  de:	1a 82       	std	Y+2, r1	; 0x02
+  e0:	8a 81       	ldd	r24, Y+2	; 0x02
+  e2:	84 30       	cpi	r24, 0x04	; 4
+  e4:	d8 f0       	brcs	.+54     	; 0x11c <keyScan+0x76>
+  e6:	29 c0       	rjmp	.+82     	; 0x13a <keyScan+0x94>
+		{
+			if(0 != (RET = keypad_in(col)))
+  e8:	e0 b3       	in	r30, 0x10	; 16
+  ea:	8a 81       	ldd	r24, Y+2	; 0x02
+  ec:	8c 5f       	subi	r24, 0xFC	; 252
+  ee:	d9 01       	movw	r26, r18
+  f0:	02 c0       	rjmp	.+4      	; 0xf6 <keyScan+0x50>
+  f2:	aa 0f       	add	r26, r26
+  f4:	bb 1f       	adc	r27, r27
+  f6:	8a 95       	dec	r24
+  f8:	e2 f7       	brpl	.-8      	; 0xf2 <keyScan+0x4c>
+  fa:	cd 01       	movw	r24, r26
+  fc:	8e 23       	and	r24, r30
+  fe:	89 83       	std	Y+1, r24	; 0x01
+ 100:	88 23       	and	r24, r24
+ 102:	41 f0       	breq	.+16     	; 0x114 <keyScan+0x6e>
+			{
+				RET = 0;
+ 104:	19 82       	std	Y+1, r1	; 0x01
+	}
+	
+static uint8_t colScan(void)
+	{
+		volatile uint8_t col,RET;
+		for(col = 0;col <=3 ;col++)
+ 106:	8a 81       	ldd	r24, Y+2	; 0x02
+ 108:	8f 5f       	subi	r24, 0xFF	; 255
+ 10a:	8a 83       	std	Y+2, r24	; 0x02
+ 10c:	8a 81       	ldd	r24, Y+2	; 0x02
+ 10e:	84 30       	cpi	r24, 0x04	; 4
+ 110:	58 f3       	brcs	.-42     	; 0xe8 <keyScan+0x42>
+ 112:	13 c0       	rjmp	.+38     	; 0x13a <keyScan+0x94>
+			{
+				RET = 0;
+			}
+			else
+			{
+				RET = col+1; 
+ 114:	8a 81       	ldd	r24, Y+2	; 0x02
+ 116:	8f 5f       	subi	r24, 0xFF	; 255
+ 118:	89 83       	std	Y+1, r24	; 0x01
+ 11a:	0f c0       	rjmp	.+30     	; 0x13a <keyScan+0x94>
+static uint8_t colScan(void)
+	{
+		volatile uint8_t col,RET;
+		for(col = 0;col <=3 ;col++)
+		{
+			if(0 != (RET = keypad_in(col)))
+ 11c:	e0 b3       	in	r30, 0x10	; 16
+ 11e:	8a 81       	ldd	r24, Y+2	; 0x02
+ 120:	8c 5f       	subi	r24, 0xFC	; 252
+ 122:	d9 01       	movw	r26, r18
+ 124:	02 c0       	rjmp	.+4      	; 0x12a <keyScan+0x84>
+ 126:	aa 0f       	add	r26, r26
+ 128:	bb 1f       	adc	r27, r27
+ 12a:	8a 95       	dec	r24
+ 12c:	e2 f7       	brpl	.-8      	; 0x126 <keyScan+0x80>
+ 12e:	cd 01       	movw	r24, r26
+ 130:	8e 23       	and	r24, r30
+ 132:	89 83       	std	Y+1, r24	; 0x01
+ 134:	88 23       	and	r24, r24
+ 136:	71 f3       	breq	.-36     	; 0x114 <keyScan+0x6e>
+ 138:	e5 cf       	rjmp	.-54     	; 0x104 <keyScan+0x5e>
+			{
+				RET = col+1; 
+				break;
+			}
+		}
+		return RET;
+ 13a:	89 81       	ldd	r24, Y+1	; 0x01
+		
+		for(raw=1;raw <= 4;raw++)
+		{
+			keypad_out(raw);
+			col = colScan();
+			if(col)
+ 13c:	88 23       	and	r24, r24
+ 13e:	31 f0       	breq	.+12     	; 0x14c <keyScan+0xa6>
+			{
+				RET = (raw-1)*4 + col;
+ 140:	61 50       	subi	r22, 0x01	; 1
+ 142:	71 09       	sbc	r23, r1
+ 144:	66 0f       	add	r22, r22
+ 146:	66 0f       	add	r22, r22
+ 148:	86 0f       	add	r24, r22
+				break;
+ 14a:	07 c0       	rjmp	.+14     	; 0x15a <keyScan+0xb4>
+ 14c:	4f 5f       	subi	r20, 0xFF	; 255
+ 14e:	5f 4f       	sbci	r21, 0xFF	; 255
+
+uint8_t keyScan(void)
+	{
+		uint8_t col,raw,RET;
+		
+		for(raw=1;raw <= 4;raw++)
+ 150:	48 30       	cpi	r20, 0x08	; 8
+ 152:	51 05       	cpc	r21, r1
+ 154:	09 f0       	breq	.+2      	; 0x158 <keyScan+0xb2>
+ 156:	b0 cf       	rjmp	.-160    	; 0xb8 <keyScan+0x12>
+ 158:	80 e0       	ldi	r24, 0x00	; 0
+				RET = 0;
+			}
+			
+		}
+		return RET;
+	}
+ 15a:	0f 90       	pop	r0
+ 15c:	0f 90       	pop	r0
+ 15e:	df 91       	pop	r29
+ 160:	cf 91       	pop	r28
+ 162:	08 95       	ret
+
+00000164 <OStime_start>:
+ 164:	89 b7       	in	r24, 0x39	; 57
+ 166:	81 60       	ori	r24, 0x01	; 1
+ 168:	89 bf       	out	0x39, r24	; 57
+ 16a:	83 b7       	in	r24, 0x33	; 51
+ 16c:	83 60       	ori	r24, 0x03	; 3
+ 16e:	83 bf       	out	0x33, r24	; 51
+ 170:	78 94       	sei
+ 172:	08 95       	ret
+
+00000174 <__vector_11>:
+ 174:	1f 92       	push	r1
+ 176:	0f 92       	push	r0
+ 178:	0f b6       	in	r0, 0x3f	; 63
+ 17a:	0f 92       	push	r0
+ 17c:	11 24       	eor	r1, r1
+ 17e:	2f 93       	push	r18
+ 180:	3f 93       	push	r19
+ 182:	4f 93       	push	r20
+ 184:	5f 93       	push	r21
+ 186:	6f 93       	push	r22
+ 188:	7f 93       	push	r23
+ 18a:	8f 93       	push	r24
+ 18c:	9f 93       	push	r25
+ 18e:	af 93       	push	r26
+ 190:	bf 93       	push	r27
+ 192:	ef 93       	push	r30
+ 194:	ff 93       	push	r31
+ 196:	0e 94 fc 00 	call	0x1f8	; 0x1f8 <SSEG_cyclic10ms>
+ 19a:	83 e6       	ldi	r24, 0x63	; 99
+ 19c:	82 bf       	out	0x32, r24	; 50
+ 19e:	ff 91       	pop	r31
+ 1a0:	ef 91       	pop	r30
+ 1a2:	bf 91       	pop	r27
+ 1a4:	af 91       	pop	r26
+ 1a6:	9f 91       	pop	r25
+ 1a8:	8f 91       	pop	r24
+ 1aa:	7f 91       	pop	r23
+ 1ac:	6f 91       	pop	r22
+ 1ae:	5f 91       	pop	r21
+ 1b0:	4f 91       	pop	r20
+ 1b2:	3f 91       	pop	r19
+ 1b4:	2f 91       	pop	r18
+ 1b6:	0f 90       	pop	r0
+ 1b8:	0f be       	out	0x3f, r0	; 63
+ 1ba:	0f 90       	pop	r0
+ 1bc:	1f 90       	pop	r1
+ 1be:	18 95       	reti
+
+000001c0 <init_SSEG>:
+ 1c0:	d4 9a       	sbi	0x1a, 4	; 26
+ 1c2:	d5 9a       	sbi	0x1a, 5	; 26
+ 1c4:	87 b3       	in	r24, 0x17	; 23
+ 1c6:	80 6f       	ori	r24, 0xF0	; 240
+ 1c8:	87 bb       	out	0x17, r24	; 23
+ 1ca:	81 e0       	ldi	r24, 0x01	; 1
+ 1cc:	80 93 61 00 	sts	0x0061, r24
+ 1d0:	08 95       	ret
+
+000001d2 <SSEG_Print9>:
+ 1d2:	98 b3       	in	r25, 0x18	; 24
+ 1d4:	20 e1       	ldi	r18, 0x10	; 16
+ 1d6:	62 9f       	mul	r22, r18
+ 1d8:	b0 01       	movw	r22, r0
+ 1da:	11 24       	eor	r1, r1
+ 1dc:	9f 70       	andi	r25, 0x0F	; 15
+ 1de:	69 2b       	or	r22, r25
+ 1e0:	68 bb       	out	0x18, r22	; 24
+ 1e2:	81 30       	cpi	r24, 0x01	; 1
+ 1e4:	19 f4       	brne	.+6      	; 0x1ec <SSEG_Print9+0x1a>
+ 1e6:	dd 98       	cbi	0x1b, 5	; 27
+ 1e8:	dc 9a       	sbi	0x1b, 4	; 27
+ 1ea:	08 95       	ret
+ 1ec:	dc 98       	cbi	0x1b, 4	; 27
+ 1ee:	dd 9a       	sbi	0x1b, 5	; 27
+ 1f0:	08 95       	ret
+
+000001f2 <SSEG_Print99>:
+ 1f2:	80 93 62 00 	sts	0x0062, r24
+ 1f6:	08 95       	ret
+
+000001f8 <SSEG_cyclic10ms>:
+ 1f8:	80 91 61 00 	lds	r24, 0x0061
+ 1fc:	88 23       	and	r24, r24
+ 1fe:	41 f1       	breq	.+80     	; 0x250 <SSEG_cyclic10ms+0x58>
+ 200:	80 91 60 00 	lds	r24, 0x0060
+ 204:	88 23       	and	r24, r24
+ 206:	79 f0       	breq	.+30     	; 0x226 <SSEG_cyclic10ms+0x2e>
+ 208:	60 91 62 00 	lds	r22, 0x0062
+ 20c:	8d ec       	ldi	r24, 0xCD	; 205
+ 20e:	68 9f       	mul	r22, r24
+ 210:	61 2d       	mov	r22, r1
+ 212:	11 24       	eor	r1, r1
+ 214:	66 95       	lsr	r22
+ 216:	66 95       	lsr	r22
+ 218:	66 95       	lsr	r22
+ 21a:	81 e0       	ldi	r24, 0x01	; 1
+ 21c:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <SSEG_Print9>
+ 220:	10 92 60 00 	sts	0x0060, r1
+ 224:	08 95       	ret
+ 226:	60 91 62 00 	lds	r22, 0x0062
+ 22a:	8d ec       	ldi	r24, 0xCD	; 205
+ 22c:	68 9f       	mul	r22, r24
+ 22e:	81 2d       	mov	r24, r1
+ 230:	11 24       	eor	r1, r1
+ 232:	86 95       	lsr	r24
+ 234:	86 95       	lsr	r24
+ 236:	86 95       	lsr	r24
+ 238:	88 0f       	add	r24, r24
+ 23a:	98 2f       	mov	r25, r24
+ 23c:	99 0f       	add	r25, r25
+ 23e:	99 0f       	add	r25, r25
+ 240:	89 0f       	add	r24, r25
+ 242:	68 1b       	sub	r22, r24
+ 244:	80 e0       	ldi	r24, 0x00	; 0
+ 246:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <SSEG_Print9>
+ 24a:	81 e0       	ldi	r24, 0x01	; 1
+ 24c:	80 93 60 00 	sts	0x0060, r24
+ 250:	08 95       	ret
+
+00000252 <_exit>:
+ 252:	f8 94       	cli
+
+00000254 <__stop_program>:
+ 254:	ff cf       	rjmp	.-2      	; 0x254 <__stop_program>
