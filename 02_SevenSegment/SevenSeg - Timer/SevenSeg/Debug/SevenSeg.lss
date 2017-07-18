@@ -1,0 +1,356 @@
+
+SevenSeg.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000001ee  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000003  00800060  00800060  00000262  2**0
+                  ALLOC
+  2 .comment      00000030  00000000  00000000  00000262  2**0
+                  CONTENTS, READONLY
+  3 .debug_aranges 00000080  00000000  00000000  00000292  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   00000477  00000000  00000000  00000312  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 000002c7  00000000  00000000  00000789  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   00000328  00000000  00000000  00000a50  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  000000f4  00000000  00000000  00000d78  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    0000021e  00000000  00000000  00000e6c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_loc    00000207  00000000  00000000  0000108a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000050  00000000  00000000  00001291  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   8:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  10:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  14:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  18:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  1c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  20:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  24:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  28:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  2c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__vector_11>
+  30:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  34:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  38:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  3c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  40:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  44:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  48:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  4c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  50:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_clear_bss>:
+  60:	20 e0       	ldi	r18, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	01 c0       	rjmp	.+2      	; 0x6a <.do_clear_bss_start>
+
+00000068 <.do_clear_bss_loop>:
+  68:	1d 92       	st	X+, r1
+
+0000006a <.do_clear_bss_start>:
+  6a:	a3 36       	cpi	r26, 0x63	; 99
+  6c:	b2 07       	cpc	r27, r18
+  6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
+  70:	0e 94 6c 00 	call	0xd8	; 0xd8 <main>
+  74:	0c 94 f5 00 	jmp	0x1ea	; 0x1ea <_exit>
+
+00000078 <__bad_interrupt>:
+  78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000007c <OStime_start>:
+ */ 
+#include <avr/interrupt.h>
+#include "OStime.h"
+#include "SSEG.h"
+void OStime_start(void){
+	TIMSK |= (1 << TOIE0); // Enable overflow interrupt
+  7c:	89 b7       	in	r24, 0x39	; 57
+  7e:	81 60       	ori	r24, 0x01	; 1
+  80:	89 bf       	out	0x39, r24	; 57
+	TCCR0 |= (1 << CS01)|(1<<CS00); // Start timer at Fcpu/64
+  82:	83 b7       	in	r24, 0x33	; 51
+  84:	83 60       	ori	r24, 0x03	; 3
+  86:	83 bf       	out	0x33, r24	; 51
+	sei();
+  88:	78 94       	sei
+  8a:	08 95       	ret
+
+0000008c <__vector_11>:
+}
+ISR(TIMER0_OVF_vect)
+{
+  8c:	1f 92       	push	r1
+  8e:	0f 92       	push	r0
+  90:	0f b6       	in	r0, 0x3f	; 63
+  92:	0f 92       	push	r0
+  94:	11 24       	eor	r1, r1
+  96:	2f 93       	push	r18
+  98:	3f 93       	push	r19
+  9a:	4f 93       	push	r20
+  9c:	5f 93       	push	r21
+  9e:	6f 93       	push	r22
+  a0:	7f 93       	push	r23
+  a2:	8f 93       	push	r24
+  a4:	9f 93       	push	r25
+  a6:	af 93       	push	r26
+  a8:	bf 93       	push	r27
+  aa:	ef 93       	push	r30
+  ac:	ff 93       	push	r31
+	SSEG_cyclic10ms();  // this function will be called every 5ms by Timer0 interrupt
+  ae:	0e 94 c8 00 	call	0x190	; 0x190 <SSEG_cyclic10ms>
+	TCNT0 = 99;  // setting the timer register to fire each 10 ms
+  b2:	83 e6       	ldi	r24, 0x63	; 99
+  b4:	82 bf       	out	0x32, r24	; 50
+  b6:	ff 91       	pop	r31
+  b8:	ef 91       	pop	r30
+  ba:	bf 91       	pop	r27
+  bc:	af 91       	pop	r26
+  be:	9f 91       	pop	r25
+  c0:	8f 91       	pop	r24
+  c2:	7f 91       	pop	r23
+  c4:	6f 91       	pop	r22
+  c6:	5f 91       	pop	r21
+  c8:	4f 91       	pop	r20
+  ca:	3f 91       	pop	r19
+  cc:	2f 91       	pop	r18
+  ce:	0f 90       	pop	r0
+  d0:	0f be       	out	0x3f, r0	; 63
+  d2:	0f 90       	pop	r0
+  d4:	1f 90       	pop	r1
+  d6:	18 95       	reti
+
+000000d8 <main>:
+#include "OStime.h"
+int main(void)
+{
+	unsigned char number = 0;
+	///////////  initialization functions ////////////
+	OStime_start();
+  d8:	0e 94 3e 00 	call	0x7c	; 0x7c <OStime_start>
+	init_SSEG();
+  dc:	0e 94 ac 00 	call	0x158	; 0x158 <init_SSEG>
+	Init_LED4;
+  e0:	8b 9a       	sbi	0x11, 3	; 17
+  e2:	93 98       	cbi	0x12, 3	; 18
+	
+	//////////   main sequence  /////////////////////
+	
+	SSEG_Print99(32);  // Printing 32 using one function
+  e4:	80 e2       	ldi	r24, 0x20	; 32
+  e6:	0e 94 c5 00 	call	0x18a	; 0x18a <SSEG_Print99>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  ea:	2f e7       	ldi	r18, 0x7F	; 127
+  ec:	8a e1       	ldi	r24, 0x1A	; 26
+  ee:	96 e0       	ldi	r25, 0x06	; 6
+  f0:	21 50       	subi	r18, 0x01	; 1
+  f2:	80 40       	sbci	r24, 0x00	; 0
+  f4:	90 40       	sbci	r25, 0x00	; 0
+  f6:	e1 f7       	brne	.-8      	; 0xf0 <main+0x18>
+  f8:	00 c0       	rjmp	.+0      	; 0xfa <main+0x22>
+  fa:	00 00       	nop
+	_delay_ms(2000);   // normal delay
+	SSEG_Print99(94);  // Printing 94
+  fc:	8e e5       	ldi	r24, 0x5E	; 94
+  fe:	0e 94 c5 00 	call	0x18a	; 0x18a <SSEG_Print99>
+ 102:	2f e7       	ldi	r18, 0x7F	; 127
+ 104:	8a e1       	ldi	r24, 0x1A	; 26
+ 106:	96 e0       	ldi	r25, 0x06	; 6
+ 108:	21 50       	subi	r18, 0x01	; 1
+ 10a:	80 40       	sbci	r24, 0x00	; 0
+ 10c:	90 40       	sbci	r25, 0x00	; 0
+ 10e:	e1 f7       	brne	.-8      	; 0x108 <main+0x30>
+ 110:	00 c0       	rjmp	.+0      	; 0x112 <main+0x3a>
+ 112:	00 00       	nop
+	_delay_ms(2000);
+    while(1)  
+    {
+		SSEG_Print99(number);
+ 114:	80 e0       	ldi	r24, 0x00	; 0
+ 116:	0e 94 c5 00 	call	0x18a	; 0x18a <SSEG_Print99>
+		number++;
+ 11a:	c1 e0       	ldi	r28, 0x01	; 1
+		if(number == 100)
+		{
+			number = 0;
+ 11c:	d0 e0       	ldi	r29, 0x00	; 0
+ 11e:	01 c0       	rjmp	.+2      	; 0x122 <main+0x4a>
+ 120:	cd 2f       	mov	r28, r29
+		}
+		
+		////////////////
+		LED4_OFF;
+ 122:	93 98       	cbi	0x12, 3	; 18
+ 124:	2f e9       	ldi	r18, 0x9F	; 159
+ 126:	86 e8       	ldi	r24, 0x86	; 134
+ 128:	91 e0       	ldi	r25, 0x01	; 1
+ 12a:	21 50       	subi	r18, 0x01	; 1
+ 12c:	80 40       	sbci	r24, 0x00	; 0
+ 12e:	90 40       	sbci	r25, 0x00	; 0
+ 130:	e1 f7       	brne	.-8      	; 0x12a <main+0x52>
+ 132:	00 c0       	rjmp	.+0      	; 0x134 <main+0x5c>
+ 134:	00 00       	nop
+		_delay_ms(500);
+		LED4_ON;
+ 136:	93 9a       	sbi	0x12, 3	; 18
+ 138:	2f e9       	ldi	r18, 0x9F	; 159
+ 13a:	86 e8       	ldi	r24, 0x86	; 134
+ 13c:	91 e0       	ldi	r25, 0x01	; 1
+ 13e:	21 50       	subi	r18, 0x01	; 1
+ 140:	80 40       	sbci	r24, 0x00	; 0
+ 142:	90 40       	sbci	r25, 0x00	; 0
+ 144:	e1 f7       	brne	.-8      	; 0x13e <main+0x66>
+ 146:	00 c0       	rjmp	.+0      	; 0x148 <main+0x70>
+ 148:	00 00       	nop
+	_delay_ms(2000);   // normal delay
+	SSEG_Print99(94);  // Printing 94
+	_delay_ms(2000);
+    while(1)  
+    {
+		SSEG_Print99(number);
+ 14a:	8c 2f       	mov	r24, r28
+ 14c:	0e 94 c5 00 	call	0x18a	; 0x18a <SSEG_Print99>
+		number++;
+ 150:	cf 5f       	subi	r28, 0xFF	; 255
+		if(number == 100)
+ 152:	c4 36       	cpi	r28, 0x64	; 100
+ 154:	31 f7       	brne	.-52     	; 0x122 <main+0x4a>
+ 156:	e4 cf       	rjmp	.-56     	; 0x120 <main+0x48>
+
+00000158 <init_SSEG>:
+uint8_t StartSSEG = 0;
+///////////////////////////////////////////////
+
+void init_SSEG(void)
+{
+	SSEG_INIT;
+ 158:	d4 9a       	sbi	0x1a, 4	; 26
+ 15a:	d5 9a       	sbi	0x1a, 5	; 26
+ 15c:	87 b3       	in	r24, 0x17	; 23
+ 15e:	80 6f       	ori	r24, 0xF0	; 240
+ 160:	87 bb       	out	0x17, r24	; 23
+	StartSSEG = 1;
+ 162:	81 e0       	ldi	r24, 0x01	; 1
+ 164:	80 93 61 00 	sts	0x0061, r24
+ 168:	08 95       	ret
+
+0000016a <SSEG_Print9>:
+}
+
+void SSEG_Print9(POS Position,unsigned char num){
+	
+	SSEG_PINS(num); /* PORTB = (num<<4); */
+ 16a:	98 b3       	in	r25, 0x18	; 24
+ 16c:	20 e1       	ldi	r18, 0x10	; 16
+ 16e:	62 9f       	mul	r22, r18
+ 170:	b0 01       	movw	r22, r0
+ 172:	11 24       	eor	r1, r1
+ 174:	9f 70       	andi	r25, 0x0F	; 15
+ 176:	69 2b       	or	r22, r25
+ 178:	68 bb       	out	0x18, r22	; 24
+	if(Position == LEFT){
+ 17a:	81 30       	cpi	r24, 0x01	; 1
+ 17c:	19 f4       	brne	.+6      	; 0x184 <SSEG_Print9+0x1a>
+		EN_LEFT_SEG;
+ 17e:	dd 98       	cbi	0x1b, 5	; 27
+ 180:	dc 9a       	sbi	0x1b, 4	; 27
+ 182:	08 95       	ret
+	}
+	else
+	{
+		EN_RIGHT_SEG;
+ 184:	dc 98       	cbi	0x1b, 4	; 27
+ 186:	dd 9a       	sbi	0x1b, 5	; 27
+ 188:	08 95       	ret
+
+0000018a <SSEG_Print99>:
+	}
+}
+void SSEG_Print99(unsigned char num)
+{
+	SSEG_NUM = num;
+ 18a:	80 93 62 00 	sts	0x0062, r24
+ 18e:	08 95       	ret
+
+00000190 <SSEG_cyclic10ms>:
+}
+//// this cyclic should be called each 10ms from OS
+void SSEG_cyclic10ms(void)
+{
+	static unsigned char flag=0;
+	if (StartSSEG)
+ 190:	80 91 61 00 	lds	r24, 0x0061
+ 194:	88 23       	and	r24, r24
+ 196:	41 f1       	breq	.+80     	; 0x1e8 <SSEG_cyclic10ms+0x58>
+	{
+		if(flag){
+ 198:	80 91 60 00 	lds	r24, 0x0060
+ 19c:	88 23       	and	r24, r24
+ 19e:	79 f0       	breq	.+30     	; 0x1be <SSEG_cyclic10ms+0x2e>
+			SSEG_Print9(LEFT,SSEG_NUM/10);
+ 1a0:	60 91 62 00 	lds	r22, 0x0062
+ 1a4:	8d ec       	ldi	r24, 0xCD	; 205
+ 1a6:	68 9f       	mul	r22, r24
+ 1a8:	61 2d       	mov	r22, r1
+ 1aa:	11 24       	eor	r1, r1
+ 1ac:	66 95       	lsr	r22
+ 1ae:	66 95       	lsr	r22
+ 1b0:	66 95       	lsr	r22
+ 1b2:	81 e0       	ldi	r24, 0x01	; 1
+ 1b4:	0e 94 b5 00 	call	0x16a	; 0x16a <SSEG_Print9>
+			flag = 0;
+ 1b8:	10 92 60 00 	sts	0x0060, r1
+ 1bc:	08 95       	ret
+		}else{
+			SSEG_Print9(RIGHT,SSEG_NUM%10);
+ 1be:	60 91 62 00 	lds	r22, 0x0062
+ 1c2:	8d ec       	ldi	r24, 0xCD	; 205
+ 1c4:	68 9f       	mul	r22, r24
+ 1c6:	81 2d       	mov	r24, r1
+ 1c8:	11 24       	eor	r1, r1
+ 1ca:	86 95       	lsr	r24
+ 1cc:	86 95       	lsr	r24
+ 1ce:	86 95       	lsr	r24
+ 1d0:	88 0f       	add	r24, r24
+ 1d2:	98 2f       	mov	r25, r24
+ 1d4:	99 0f       	add	r25, r25
+ 1d6:	99 0f       	add	r25, r25
+ 1d8:	89 0f       	add	r24, r25
+ 1da:	68 1b       	sub	r22, r24
+ 1dc:	80 e0       	ldi	r24, 0x00	; 0
+ 1de:	0e 94 b5 00 	call	0x16a	; 0x16a <SSEG_Print9>
+			flag = 1;
+ 1e2:	81 e0       	ldi	r24, 0x01	; 1
+ 1e4:	80 93 60 00 	sts	0x0060, r24
+ 1e8:	08 95       	ret
+
+000001ea <_exit>:
+ 1ea:	f8 94       	cli
+
+000001ec <__stop_program>:
+ 1ec:	ff cf       	rjmp	.-2      	; 0x1ec <__stop_program>
